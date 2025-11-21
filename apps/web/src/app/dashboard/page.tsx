@@ -41,32 +41,22 @@ export default function EventsDashboard() {
 
     return (
         <div className="relative min-h-screen overflow-hidden">
-            {/* Pixelated Background Pattern */}
+            {/* Small Pixel Dots Background */}
             <div 
-                className="absolute inset-0 opacity-20"
+                className="absolute inset-0 opacity-40"
                 style={{
                     backgroundImage: `
-                        repeating-linear-gradient(
-                            0deg,
-                            transparent,
-                            transparent 4px,
-                            rgba(34, 197, 94, 0.1) 4px,
-                            rgba(34, 197, 94, 0.1) 8px
-                        ),
-                        repeating-linear-gradient(
-                            90deg,
-                            transparent,
-                            transparent 4px,
-                            rgba(34, 197, 94, 0.1) 4px,
-                            rgba(34, 197, 94, 0.1) 8px
-                        )
+                        radial-gradient(circle, rgba(34, 197, 94, 0.5) 0.5px, transparent 0.5px),
+                        radial-gradient(circle, rgba(34, 197, 94, 0.4) 0.5px, transparent 0.5px),
+                        radial-gradient(circle, rgba(34, 197, 94, 0.3) 0.5px, transparent 0.5px)
                     `,
-                    backgroundSize: '8px 8px'
+                    backgroundSize: '8px 8px, 12px 12px, 16px 16px',
+                    backgroundPosition: '0 0, 4px 4px, 8px 8px',
+                    imageRendering: 'pixelated'
                 }}
             />
             
             {/* Neon Green Glow - Top Center Only */}
-            
             <div 
                 className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[200px] bg-green-400/15 blur-[80px] rounded-full"
             />
@@ -82,7 +72,10 @@ export default function EventsDashboard() {
                     {stats.map((stat) => {
                         const Icon = stat.icon;
                         return (
-                            <Card key={stat.title} className="backdrop-blur-sm bg-background/95">
+                            <Card 
+                                key={stat.title} 
+                                className="backdrop-blur-sm bg-background/95 transition-all duration-300 hover:-translate-y-2 hover:shadow-lg hover:shadow-green-500/20 cursor-pointer"
+                            >
                                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                     <CardTitle className="text-sm font-medium">
                                         {stat.title}
@@ -101,7 +94,7 @@ export default function EventsDashboard() {
                 {/* Main Content Grid */}
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
                     {/* Overview Chart */}
-                    <Card className="col-span-4 backdrop-blur-sm bg-background/95">
+                    <Card className="col-span-4 backdrop-blur-sm bg-background/95 transition-all duration-300 hover:-translate-y-2 hover:shadow-lg hover:shadow-green-500/20 cursor-pointer">
                         <CardHeader>
                             <CardTitle>Monthly Registrations Overview</CardTitle>
                         </CardHeader>
@@ -113,7 +106,7 @@ export default function EventsDashboard() {
                     </Card>
 
                     {/* Recent Events */}
-                    <Card className="col-span-3 backdrop-blur-sm bg-background/95">
+                    <Card className="col-span-3 backdrop-blur-sm bg-background/95 transition-all duration-300 hover:-translate-y-2 hover:shadow-lg hover:shadow-green-500/20 cursor-pointer">
                         <CardHeader>
                             <CardTitle>Recent Events</CardTitle>
                             <CardDescription>
