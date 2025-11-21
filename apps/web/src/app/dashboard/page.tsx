@@ -1,25 +1,154 @@
-import { redirect } from "next/navigation";
-import Dashboard from "./dashboard";
-import { headers } from "next/headers";
-import { authClient } from "@/lib/auth-client";
+"use client";
 
-export default async function DashboardPage() {
-	const session = await authClient.getSession({
-		fetchOptions: {
-			headers: await headers(),
-			throw: true,
-		},
-	});
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Calendar, Users, Ticket, School } from "lucide-react";
 
-	if (!session?.user) {
-		redirect("/login");
-	}
+export default function EventsDashboard() {
+    const stats = [
+        {
+            title: "Upcoming Events",
+            value: "12",
+            change: "3 added this week",
+            icon: Calendar,
+        },
+        {
+            title: "Active Clubs",
+            value: "18",
+            change: "+2 from last month",
+            icon: School,
+        },
+        {
+            title: "Total Registrations",
+            value: "342",
+            change: "+89 this week",
+            icon: Users,
+        },
+        {
+            title: "Today's Events",
+            value: "3",
+            change: "Runs till 7 PM",
+            icon: Ticket,
+        },
+    ];
 
-	return (
-		<div>
-			<h1>Dashboard</h1>
-			<p>Welcome {session.user.name}</p>
-			<Dashboard session={session} />
-		</div>
-	);
+    const recentEvents = [
+        { id: 1, name: "Tech Talk: AI & Future", club: "Computer Club", attendees: 120 },
+        { id: 2, name: "Cultural Night", club: "Arts Club", attendees: 85 },
+        { id: 3, name: "Robotics Workshop", club: "Mech Club", attendees: 60 },
+        { id: 4, name: "Photography Walk", club: "Media Club", attendees: 42 },
+        { id: 5, name: "Startup Pitching", club: "Entrepreneurship Cell", attendees: 90 },
+    ];
+
+    return (
+        <div className="relative min-h-screen overflow-hidden">
+            {/* Pixelated Background Pattern */}
+            <div 
+                className="absolute inset-0 opacity-20"
+                style={{
+                    backgroundImage: `
+                        repeating-linear-gradient(
+                            0deg,
+                            transparent,
+                            transparent 4px,
+                            rgba(34, 197, 94, 0.1) 4px,
+                            rgba(34, 197, 94, 0.1) 8px
+                        ),
+                        repeating-linear-gradient(
+                            90deg,
+                            transparent,
+                            transparent 4px,
+                            rgba(34, 197, 94, 0.1) 4px,
+                            rgba(34, 197, 94, 0.1) 8px
+                        )
+                    `,
+                    backgroundSize: '8px 8px'
+                }}
+            />
+            
+            {/* Neon Green Glow - Top Center Only */}
+            <div 
+                className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-green-500/20 blur-[100px] rounded-full"
+            />
+            <div 
+                className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[200px] bg-green-400/15 blur-[80px] rounded-full"
+            />
+
+            {/* Content */}
+            <div className="relative flex-1 space-y-4 p-8 pt-6">
+                <div className="flex items-center justify-between space-y-2">
+                    <h2 className="text-3xl font-bold tracking-tight">College Events Dashboard</h2>
+                </div>
+
+                {/* Stats Grid */}
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                    {stats.map((stat) => {
+                        const Icon = stat.icon;
+                        return (
+                            <Card key={stat.title} className="backdrop-blur-sm bg-background/95">
+                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                    <CardTitle className="text-sm font-medium">
+                                        {stat.title}
+                                    </CardTitle>
+                                    <Icon className="h-4 w-4 text-muted-foreground" />
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="text-2xl font-bold">{stat.value}</div>
+                                    <p className="text-xs text-muted-foreground">{stat.change}</p>
+                                </CardContent>
+                            </Card>
+                        );
+                    })}
+                </div>
+
+                {/* Main Content Grid */}
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+                    {/* Overview Chart */}
+                    <Card className="col-span-4 backdrop-blur-sm bg-background/95">
+                        <CardHeader>
+                            <CardTitle>Monthly Registrations Overview</CardTitle>
+                        </CardHeader>
+                        <CardContent className="pl-2">
+                            <div className="h-[300px] flex items-center justify-center text-muted-foreground">
+                                Chart Component (Add recharts or similar)
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Recent Events */}
+                    <Card className="col-span-3 backdrop-blur-sm bg-background/95">
+                        <CardHeader>
+                            <CardTitle>Recent Events</CardTitle>
+                            <CardDescription>
+                                Latest activities & attendee counts.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="space-y-8">
+                                {recentEvents.map((event) => (
+                                    <div key={event.id} className="flex items-center">
+                                        <div className="h-9 w-9 rounded-full bg-green-500/10 flex items-center justify-center border border-green-500/20">
+                                            <span className="text-sm font-medium">
+                                                {event.club.split(' ').map(n => n[0]).join('')}
+                                            </span>
+                                        </div>
+                                        <div className="ml-4 space-y-1">
+                                            <p className="text-sm font-medium leading-none">
+                                                {event.name}
+                                            </p>
+                                            <p className="text-sm text-muted-foreground">
+                                                {event.club}
+                                            </p>
+                                        </div>
+                                        <div className="ml-auto font-medium">
+                                            {event.attendees} attendees
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
+        </div>
+    );
 }
